@@ -1,0 +1,119 @@
+A51 MACRO ASSEMBLER  COMPASS_INTERFACE                                                    04/04/2023 19:11:11 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.5.0
+NO OBJECT MODULE REQUESTED
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE compass_interface.a51 SET(SMALL) DEBUG PRINT(.\Listings\compass_interfa
+                      ce.lst) OBJECT(.\Objects\compass_interface.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; Define pins for ULN2003 stepper motor driver
+
+  0090                 2     Pins equ P1
+
+                       3     
+
+                       4     ; Define delay time between steps (in milliseconds)
+
+  03E8                 5     DelayTime equ 1000
+
+                       6     
+
+                       7     ; Define sequence of motor steps
+
+0000 01020408          8     Sequence:   db  0x01, 0x02, 0x04, 0x08
+
+                       9     
+
+                      10     ; Define variables
+
+0004 00               11     Counter:    db  0
+
+                      12     
+
+                      13     ; Initialize microcontroller
+
+0005 759000           14         mov     Pins, #0x00         ; Set all pins to low
+
+0008 758901           15         mov     TMOD, #0x01         ; Set Timer0 as 16-bit timer
+
+000B 758CFC           16         mov     TH0, #0xFC          ; Set Timer0 initial value (65536 - 5000)
+
+000E 758A18           17         mov     TL0, #0x18          ; Set Timer0 initial value (65536 - 5000)
+
+0011 D28C             18         setb    TR0                 ; Start Timer0
+
+0013 D2A9             19         setb    ET0                 ; Enable Timer0 interrupt
+
+0015 D2AF             20         setb    EA                  ; Enable global interrupt
+
+                      21     
+
+                      22     ; Timer0 interrupt service routine
+
+0017                  23     Timer0_isr:
+
+0017 C28D             24         clr     TF0                 ; Clear Timer0 interrupt flag
+
+0019 7404             25         mov     A, #Counter
+
+001B 5403             26         anl     A, #03h             ; Keep only lower 2 bits of counter
+
+001D F582             27         mov     DPL, A
+
+001F 7400             28         mov     A, #Sequence
+
+0021 2582             29         add     A, DPL              ; Add counter to sequence address
+
+0023                  30         mov     A, @A               ; Get value at sequence address
+
+*** ________________________________________^
+*** _________________________________________^
+*** _________________________________________________________^
+*** ERROR #A9 IN 30 (compass_interface.a51, LINE 30): SYNTAX ERROR
+*** ERROR #A9 IN 30 (compass_interface.a51, LINE 30): SYNTAX ERROR
+*** ERROR #A9 IN 30 (compass_interface.a51, LINE 30): SYNTAX ERROR
+0023 F590             31         mov     Pins, A             ; Set pins to motor step
+
+0025 32               32         reti                        ; Return from interrupt
+
+                      33     
+
+                      34     ; Main program
+
+0026                  35     Main:
+
+0026 80FE             36         sjmp    $                   ; Wait for interrupt
+
+                      37     end
+
+A51 MACRO ASSEMBLER  COMPASS_INTERFACE                                                    04/04/2023 19:11:11 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+COUNTER. . . . . .  C ADDR   0004H   A   
+DELAYTIME. . . . .  N NUMB   03E8H   A   
+DPL. . . . . . . .  D ADDR   0082H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+MAIN . . . . . . .  C ADDR   0026H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PINS . . . . . . .  D ADDR   0090H   A   
+SEQUENCE . . . . .  C ADDR   0000H   A   
+TF0. . . . . . . .  B ADDR   0088H.5 A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TIMER0_ISR . . . .  C ADDR   0017H   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 3 ERROR(S)

@@ -1,0 +1,104 @@
+A51 MACRO ASSEMBLER  MAINPROG                                                             04/04/2023 20:09:20 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.5.0
+OBJECT MODULE PLACED IN .\Objects\MAINPROG.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE MAINPROG.A51 SET(SMALL) DEBUG PRINT(.\Listings\MAINPROG.lst) OBJECT(.\O
+                      bjects\MAINPROG.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; Defining variables
+
+  0090                 2     MOTOR   equ P1
+
+  09C4                 3     DELTA   equ 2500
+
+0000 01020408          4     SEQ:    db 01h, 02h, 04h, 08h
+
+  0000                 5     COUNT   equ 0
+
+                       6     
+
+                       7     ; Initializing microcontroller
+
+0004 759000            8     mov MOTOR, #00h
+
+0007 758901            9     mov TMOD, #01h
+
+000A 758CFC           10     mov TH0, #0FCh
+
+000D 758A18           11     mov TL0, #18h
+
+0010 D28C             12     setb TR0
+
+0012 D2A9             13     setb ET0
+
+0014 D2AF             14     setb EA
+
+                      15     
+
+0016                  16     t0isr:
+
+0016 C28D             17             clr TF0
+
+                      18             ;mov A, #COUNT
+
+                      19             ;inc A
+
+                      20             ;mov COUNT, A
+
+                      21             ;anl A, #03h
+
+                      22             ;mov R0, #SEQ
+
+                      23             ;add A, R0
+
+                      24             ;mov R0, A
+
+                      25             ;movx A, @R0
+
+                      26             ;mov MOTOR, A
+
+0018 AE00             27             mov R6, 00h
+
+001A AD11             28             mov R5, 11h
+
+001C 32               29             reti
+
+                      30     
+
+001D                  31     main:
+
+001D 80FE             32             sjmp $
+
+                      33     end
+
+A51 MACRO ASSEMBLER  MAINPROG                                                             04/04/2023 20:09:20 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+COUNT. . . . . . .  N NUMB   0000H   A   
+DELTA. . . . . . .  N NUMB   09C4H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+MAIN . . . . . . .  C ADDR   001DH   A   
+MOTOR. . . . . . .  D ADDR   0090H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+SEQ. . . . . . . .  C ADDR   0000H   A   
+T0ISR. . . . . . .  C ADDR   0016H   A   
+TF0. . . . . . . .  B ADDR   0088H.5 A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
